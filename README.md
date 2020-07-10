@@ -1,44 +1,127 @@
-# ToyRobot
+# Toy Robot Simulator
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/toy_robot`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Table of contents:
 
-TODO: Delete this and the text above, and describe your gem
+* [Description](./README.md#description)
+  * [Constraints](./README.md#constraints)
+  * [Example Input and Output](./README.md#example-input-and-output)
+  * [Deliverables](./README.md#deliverables)
+* [Setup](./README.md#setup)
 
-## Installation
+## Description
 
-Add this line to your application's Gemfile:
+* The application is a simulation of a toy robot moving on a square tabletop, of dimensions 5x5. Having a CLI option and also a web version.
 
-```ruby
-gem 'toy_robot'
+* There are no other obstructions on the table surface.
+
+* The robot is free to roam around the surface of the table, but must be prevented from falling to destruction. Any movement that would result in the robot falling from the table must be prevented, however further valid movement commands must still be allowed.
+
+Create an application that can read in commands of the following form:
+
+### Command Line Interface (CLI)
+
+```
+PLACE X,Y,F
+MOVE
+LEFT
+RIGHT
+REPORT
 ```
 
-And then execute:
+* `PLACE` will put the toy robot on the table in position X,Y and facing NORTH, SOUTH, EAST or WEST.
 
-    $ bundle install
+* The origin (0,0) can be considered to be the NORTH WEST most corner.
 
-Or install it yourself as:
+* The first valid command to the robot is a `PLACE` command, after that, any sequence of commands may be issued, in any order, including another `PLACE` command. The application should discard all commands in the sequence until a valid `PLACE` command has been executed
 
-    $ gem install toy_robot
+* `MOVE` will move the toy robot one unit forward in the direction it is currently facing.
 
-## Usage
+* `LEFT` and `RIGHT` will rotate the robot 90 degrees in the specified direction without changing the position of the robot.
 
-TODO: Write usage instructions here
+* `REPORT` will announce the X,Y and F of the robot. This can be in any form, but standard output is sufficient.
 
-## Development
+* A robot that is not on the table can choose to ignore the `MOVE`, `LEFT`, `RIGHT` and `REPORT` commands.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+* Inputs could be from a file or STDIN, as the developer chooses.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+* Provide test data to exercise the application.
 
-## Contributing
+### WEB
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/toy_robot. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/toy_robot/blob/master/CODE_OF_CONDUCT.md).
+You have to create a simple (no complex layout needed) web application, showing the table and the position and direction of the robot on the table (if robot already placed on table). All commands must update robot position, in other words, the command's output should be visible on the table, invalidating the necessity of the `REPORT` command.
 
+You are free to decide how to receive commands, being it in batches or individually, but the commands must be "processed" individually. Meaning all commands must update the robot position on the table in a way the user can understand the path the robot is following.
 
-## License
+* All commands (except `REPORT` which is unnecessary for the Web Version) should work exactly as on the CLI.
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+### Constraints
 
-## Code of Conduct
+* The toy robot must not fall off the table during movement. This also includes the initial placement of the toy robot.
 
-Everyone interacting in the ToyRobot project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/toy_robot/blob/master/CODE_OF_CONDUCT.md).
+* Any move that would cause the robot to fall must be ignored.
+
+### Example Input and Output:
+
+#### Example a
+
+    PLACE 0,0,SOUTH
+    MOVE
+    REPORT
+
+Expected output:
+
+    0,1,SOUTH
+
+#### Example b
+
+    PLACE 0,0,SOUTH
+    LEFT
+    REPORT
+
+Expected output:
+
+    0,0,EAST
+
+#### Example c
+
+    PLACE 1,2,EAST
+    MOVE
+    MOVE
+    RIGHT
+    MOVE
+    REPORT
+
+Expected output
+
+    3,3,SOUTH
+
+### Deliverables
+
+Please provide your source code, and any test code/data you used to
+build your solution.
+
+Please engineer your solution to a standard you consider suitable for
+production. It is not required to provide any graphical output showing the
+movement of the toy robot on the CLI, only on the web.
+
+## Setup
+
+1. Make sure you have the latest Ruby installed in your machine. If you need help installing Ruby, take a look at the [official installation guide](https://www.ruby-lang.org/en/documentation/installation/).
+
+2. Install the [bundler](http://bundler.io/) and [rails](https://rubyonrails.org/) gems by running:
+
+    ```gem install bundler rails```
+
+3. Create a Rails app:
+
+    ```rails new toy_robot```
+
+4. Change to the app directory:
+
+    ```cd toy_robot```
+
+5. Install dependencies:
+
+    ```bundle install```
+
+And you're ready to go!

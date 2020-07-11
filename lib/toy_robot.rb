@@ -6,6 +6,7 @@ require 'toy_robot/directions/all'
 require 'toy_robot/directions'
 require 'toy_robot/position'
 require 'toy_robot/coordinate'
+require 'toy_robot/command'
 
 module ToyRobot
   class Error < StandardError; end
